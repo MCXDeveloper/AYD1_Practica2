@@ -81,4 +81,16 @@ class Model_login extends CI_Model {
 
     }
 
+    public function actualizar_datos_usuario($datos, $condicion) {
+
+        $query = $this->db->update('usuario', $datos, $condicion);
+
+        if ($this->db->affected_rows() == '1'){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+
+    }
+
 }

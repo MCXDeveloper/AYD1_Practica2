@@ -131,4 +131,76 @@ class Home extends CI_Controller {
 
 	}
 
+	public function obtener_datos_extra() {
+
+		$code = 0;
+		$message = "No se realizo ninguna acción.";
+
+		if($this->model_login->is_logged() == TRUE) {
+
+			//Obtengo la informacion del usuario
+			$correo_usuario = $this->session->userdata['usr_correo'];
+
+			$usr_resp = $this->model_login->obtener_usuario($correo_usuario);
+
+			$code = 1;
+			$message = $usr_resp;
+
+		}else{
+			$code = 2;
+			$message = "No se realizo ninguna acción.  Reinicia tu sesión.";
+		}
+
+		$respuesta = array(
+			'code' => $code,
+			'message' => $message
+		);
+
+		echo json_encode($respuesta);
+
+	}
+
+	public function actualizar_data_usuario() {
+
+		$code = 0;
+		$message = "No se realizo ninguna acción.";
+
+		if($this->model_login->is_logged() == TRUE) {
+
+			//Obtengo la informacion del usuario
+			$correo_usuario = $this->session->userdata['usr_correo'];
+
+			$direccion = $this->input->post('direccion');
+			$tarjeta_credito = $this->input->post('tarjeta_credito');
+
+			$datos = array(
+				'direccion' => $direccion,
+				'tarjeta_credito' => $tarjeta_credito
+			);
+
+			$condicion = array('correo' => $correo_usuario);
+
+			$up_resp = $this->model_login->actualizar_datos_usuario($datos, $condicion);
+
+			if($up_resp != FALSE) {
+				$code = 1;
+				$message = "Información actualizada correctamente.";
+			}else{
+				$message = "No se pudo actualizar la información o la información es la misma y no hay que actualizar nuevamente.";
+			}
+
+		}else{
+			$code = 2;
+			$message = "No se realizo ninguna acción.  Reinicia tu sesión.";
+		}
+
+		$respuesta = array(
+			'code' => $code,
+			'message' => $message
+		);
+
+		echo json_encode($respuesta);
+
+	}
+
 }
