@@ -42,14 +42,9 @@
             function setProductCookie(value) {
                 if(!validateProductCookie(value.id)){
                     prod_sel.push(value);
-                    console.log("1");
                 }else{
-                    var result = prod_sel.find(function (obj) {
-                        if(obj.id === value){
-                            obj = value;
-                        }
-                    });
-                    console.log("2");
+                    var result = prod_sel.findIndex((obj => obj.id == value.id));
+                    prod_sel[result] = value;
                 }
                 Cookies.set('cookie_products', JSON.stringify(prod_sel), { expires: 180, path: '' });
             }
@@ -104,7 +99,7 @@
                                     ).append(
                                         $('<p>').html(v.descripcion)
                                     ).append(
-                                        $('<button>').attr('class', 'btn btn-danger ver-detalle').attr('data-id', v.id_producto).attr('data-nombre', v.nombre).attr('data-descripcion', v.descripcion).attr('data-specs', v.specs).attr('data-image', imagen).html('Ver detalle')
+                                        $('<button>').attr('class', 'btn btn-danger ver-detalle').attr('data-id', v.id_producto).attr('data-precio', v.precio).attr('data-nombre', v.nombre).attr('data-descripcion', v.descripcion).attr('data-specs', v.specs).attr('data-image', imagen).html('Ver detalle')
                                     );
 
                                 }else if(cnt>=4){
@@ -139,6 +134,7 @@
                 var nombre = $(this).attr('data-nombre');
                 var descripcion = $(this).attr('data-descripcion');
                 var specs = $(this).attr('data-specs');
+                var precio = $(this).attr('data-precio');
 
                 $('#modalDetalle').find('.modal-body').empty().append(
                     $('<div>').attr('class', 'container').append(
@@ -169,7 +165,7 @@
                                 )
                             ).append(
                                 $('<div>').attr('class', 'col-md-6').append(
-                                    $('<button>').attr('data-id', identificador).attr('data-nombre', nombre).attr('data-imagen', imagen).attr('class', 'btn btn-primary btn_add_cart').html('Añadir')
+                                    $('<button>').attr('data-id', identificador).attr('data-nombre', nombre).attr('data-imagen', imagen).attr('data-precio', precio).attr('class', 'btn btn-primary btn_add_cart').html('Añadir')
                                 )
                             )
                         )
@@ -189,10 +185,19 @@
                 var id_producto = $(this).attr('data-id');
                 var nombre = $(this).attr('data-nombre');
                 var imagen = $(this).attr('data-imagen');
+                var precio = $(this).attr('data-precio');
                 var cantidad_seleccionada = $('#modalDetalle').find('.cantidad_select').val();
 
-                var elemento = {id: id_producto, nombre: nombre, imagen: imagen, cantidad: cantidad_seleccionada};
+                var elemento = {id: id_producto, nombre: nombre, imagen: imagen, cantidad: cantidad_seleccionada, precio: precio};
                 setProductCookie(elemento);
+
+                alert('Producto añadido correctamente');
+
+                if(countProperties() != 0){
+                    $('.badge_carrito').html(countProperties());
+                }
+
+                $('#modalDetalle').modal('hide');
 
             });
 
