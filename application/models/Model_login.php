@@ -16,6 +16,18 @@ class Model_login extends CI_Model {
         }
     }
 
+    public function obtener_usuario($correo) {
+
+        $query = $this->db->get_where('usuario', array('correo' => $correo));
+
+        if($query->num_rows() > 0){
+            return $query->row();
+        }else{
+            return FALSE;
+        }
+
+    }
+
     public function verificar_login($correo, $contraseña) {
 
         $data = array(
@@ -39,6 +51,30 @@ class Model_login extends CI_Model {
 
         if($query->num_rows() > 0){
             return $query->result();
+        }else{
+            return FALSE;
+        }
+
+    }
+
+    public function registrar_pedido($datos) {
+
+        $query = $this->db->insert('pedido', $datos);
+
+        if ($this->db->affected_rows() == '1'){
+            return $this->db->insert_id();
+        }else{
+            return FALSE;
+        }
+
+    }
+
+    public function registrar_productos_pedido($datos) {
+
+        $query = $this->db->insert('detalle_pedido', $datos);
+
+        if ($this->db->affected_rows() == '1'){
+            return $this->db->insert_id();
         }else{
             return FALSE;
         }

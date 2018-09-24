@@ -45,43 +45,91 @@
 
             updateProductArray();
 
-            $('#modalDetalleCarrito').find('.modal-body').empty();
+            if(countProperties() != 0) {
 
-            var table = $('<table>').attr('class', 'table');
+                $('#modalDetalleCarrito').find('.modal-body').empty();
 
-            $.each(prod_sel, function(k, v){
+                var table = $('<table>').attr('class', 'table');
 
-                if(k == 0){
+                $.each(prod_sel, function(k, v){
+
+                    if(k == 0){
+                        var row = $('<tr>').append(
+                            $('<td>').html('Imagen')
+                        ).append(
+                            $('<td>').html('Nombre')
+                        ).append(
+                            $('<td>').html('Cantidad')
+                        ).append(
+                            $('<td>').html('Precio')
+                        )
+                        table.append(row);
+                    }
+
                     var row = $('<tr>').append(
-                        $('<td>').html('Imagen')
+                        $('<td>').append(
+                            $('<img>').attr('class', 'img-responsive').attr('style', 'height:5%;').attr('src', v.imagen)
+                        )
                     ).append(
-                        $('<td>').html('Nombre')
+                        $('<td>').html(v.nombre)
                     ).append(
-                        $('<td>').html('Cantidad')
+                        $('<td>').html(v.cantidad)
                     ).append(
-                        $('<td>').html('Precio')
+                        $('<td>').html('Q.' + v.precio)
                     )
+
                     table.append(row);
+
+                });
+
+                $('#modalDetalleCarrito').find('.modal-body').append(table);
+                $('#modalDetalleCarrito').modal('show');
+
+            }else{
+                alert('No hay productos en el carrito.')
+            }
+
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    $(document).on('click', '#btn_registrar_pedido', function(){
+
+        updateProductArray();
+
+        var datos = JSON.stringify(prod_sel);
+
+        $.ajax({
+
+            type: 'POST',
+            url:  '<?php echo base_url('home/registrar_pedido'); ?>',
+            data: { datos : datos },
+            timeout: 5000,
+
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Ocurrió un error');
+            },
+
+            success: function(data) {
+
+                var obj = $.parseJSON(data);
+
+                alert(obj.message);
+
+                if(obj.code == 1) {
+
+                    cleanCookieJar();
+                    $('.badge_carrito').html(countProperties());
+                    $('#modalDetalleCarrito').modal('hide');
+
+                }else if(obj.code == 2) {
+                    window.location.href = "<?php echo base_url(); ?>";
                 }
 
-                var row = $('<tr>').append(
-                    $('<td>').append(
-                        $('<img>').attr('class', 'img-responsive').attr('style', 'height:5%;').attr('src', v.imagen)
-                    )
-                ).append(
-                    $('<td>').html(v.nombre)
-                ).append(
-                    $('<td>').html(v.cantidad)
-                ).append(
-                    $('<td>').html('Q.' + v.precio)
-                )
-
-                table.append(row);
-
-            });
-
-            $('#modalDetalleCarrito').find('.modal-body').append(table);
-            $('#modalDetalleCarrito').modal('show');
+            }
 
         });
 

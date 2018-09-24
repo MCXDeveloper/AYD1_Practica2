@@ -39,6 +39,11 @@
                 return response;
             }
 
+            function cleanCookieJar() {
+                prod_sel = [];
+                Cookies.set('cookie_products', JSON.stringify(prod_sel), { expires: 180, path: '' });
+            }
+
             function setProductCookie(value) {
                 if(!validateProductCookie(value.id)){
                     prod_sel.push(value);
