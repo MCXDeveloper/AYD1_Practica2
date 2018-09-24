@@ -32,18 +32,18 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4 col-md-offset-1">
-                            <form role="form">
+                            <form role="form" class="datos_form">
                                 <div class="form-group">
                                     <label class="control-label">Correo electrónico</label>
-                                    <input class="form-control" id="email" name="email" placeholder="Ingrese su correo electrónico" type="email">
+                                    <input class="form-control" id="email" name="email" placeholder="Ingrese su correo electrónico" type="email" required>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Contraseña</label>
-                                    <input class="form-control" id="password" name="password" placeholder="Contraseña" type="password">
+                                    <input class="form-control" id="password" name="password" placeholder="Contraseña" type="password" required>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" data-dismiss="modal">Iniciar sesión</button>
+                                    <button id="btnAction" type="button" class="btn-accion"></button>
                                 </div>
                             </form>
                         </div>
@@ -65,8 +65,46 @@
             var texto_boton = $(this).attr('data-btn');
 
             $('#modalDatos').find('.modal-title').html(titulo);
-            $('#modalDatos').find('button[type="submit"]').attr('class', 'btn btn-' + color).attr('data-action', action).html(texto_boton);
+            $('#modalDatos').find('#btnAction').attr('class', 'btn btn-accion btn-' + color).attr('data-action', action).html(texto_boton);
             $('#modalDatos').modal('show');
+
+        });
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $('.btn-accion').on('click', function(){
+
+        var correo = $('#email').val();
+        var contraseña = $('#password').val();
+        var accion = $(this).attr('data-action');
+
+        $.ajax({
+
+            type: 'POST',
+            url:  accion,
+            data: {correo : correo, password : contraseña},
+            timeout: 5000,
+
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Ocurrió un error');
+            },
+
+            success: function(data) {
+
+                var obj = $.parseJSON(data);
+
+                alert(obj.message);
+
+                if(obj.code == 1){
+                    $('#modalDatos').modal('hide');
+                    window.location.href = "<?php echo base_url('tienda-en-linea'); ?>";
+                }
+
+            }
 
         });
 
