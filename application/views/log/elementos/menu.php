@@ -11,6 +11,9 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-ex-collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"><span class="badge badge_carrito">0</span><i class="fa fa-fw fa-lg fa-shopping-cart"></i></a>
+                </li>
                 <li class="active">
                     <a href="#">Cerrar sesión</a>
                 </li>

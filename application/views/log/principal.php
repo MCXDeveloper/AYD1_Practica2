@@ -5,12 +5,65 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
         <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+        <script type="text/javascript" src="<?php echo base_url('assets/js/js.cookie.min.js'); ?>"></script>
         <link href="<?php echo base_url('assets/css/font-awesome.min.css'); ?>" rel="stylesheet" type="text/css">
         <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet" type="text/css">
 
         <script type="text/javascript">
 
+            // Variable para almacenamiento de cookies
+            var prod_sel = [];
+
+            function getProductCookie() {
+                return Cookies.get('cookie_products');
+            }
+
+            function countProperties() {
+                updateProductArray();
+                return Object.keys(prod_sel).length;
+            }
+
+            function updateProductArray() {
+                if(typeof getProductCookie() !== 'undefined') {
+                    prod_sel = JSON.parse(getProductCookie());
+                }
+            }
+
+            function validateProductCookie(value) {
+                var response = false;
+                updateProductArray();
+                var result = prod_sel.find(function (obj) { return obj.id === value; });
+                if(result){
+                    response = true;
+                }
+                return response;
+            }
+
+            function setProductCookie(value) {
+                if(!validateProductCookie(value.id)){
+                    prod_sel.push(value);
+                    console.log("1");
+                }else{
+                    var result = prod_sel.find(function (obj) {
+                        if(obj.id === value){
+                            obj = value;
+                        }
+                    });
+                    console.log("2");
+                }
+                Cookies.set('cookie_products', JSON.stringify(prod_sel), { expires: 180, path: '' });
+            }
+
+        </script>
+
+        <script type="text/javascript">
+
             $(document).ready(function(){
+
+                //Actualizo el contador del carrito
+                if(countProperties() != 0){
+                    $('.badge_carrito').html(countProperties());
+                }
 
                 $.ajax({
 
@@ -87,7 +140,7 @@
                 var descripcion = $(this).attr('data-descripcion');
                 var specs = $(this).attr('data-specs');
 
-                $('#modalDetalle').find('.modal-body').append(
+                $('#modalDetalle').find('.modal-body').empty().append(
                     $('<div>').attr('class', 'container').append(
                         $('<div>').attr('class', 'row').append(
                             $('<div>').attr('class', 'col-md-4 col-md-offset-1').append(
@@ -101,8 +154,8 @@
                             ).append(
                                 $('<h4>').html("Añadir al carrito")
                             ).append(
-                                $('<div>').attr('class', 'col-md-6').append(
-                                    $('<select>').attr('id', 'cantidad_select').attr('class', 'form-control').append(
+                                $('<div>').attr('class', 'col-md-6 select-container').append(
+                                    $('<select>').attr('class', 'form-control cantidad_select').append(
                                         $('<option>').val(1).text(1)
                                     ).append(
                                         $('<option>').val(2).text(2)
@@ -116,7 +169,7 @@
                                 )
                             ).append(
                                 $('<div>').attr('class', 'col-md-6').append(
-                                    $('<button>').attr('id', 'btn_add_cart').attr('data-id', identificador).attr('class', 'btn btn-primary').html('Añadir')
+                                    $('<button>').attr('data-id', identificador).attr('data-nombre', nombre).attr('data-imagen', imagen).attr('class', 'btn btn-primary btn_add_cart').html('Añadir')
                                 )
                             )
                         )
@@ -129,13 +182,31 @@
 
         </script>
 
+        <script type="text/javascript">
+
+            $(document).on('click', '.btn_add_cart', function(){
+
+                var id_producto = $(this).attr('data-id');
+                var nombre = $(this).attr('data-nombre');
+                var imagen = $(this).attr('data-imagen');
+                var cantidad_seleccionada = $('#modalDetalle').find('.cantidad_select').val();
+
+                var elemento = {id: id_producto, nombre: nombre, imagen: imagen, cantidad: cantidad_seleccionada};
+                setProductCookie(elemento);
+
+            });
+
+        </script>
+
     </head>
 
     <body>
 
         <?php $this->load->view('log/elementos/menu'); ?>
-        <br><br><br><br><br><br>
+        <br><br><br>
         <div class="section">
+            <h1 style="text-align:center;">COMPUTADORAS EN STOCK</h1>
+            <br>
             <div id="laptop_container" class="container"></div>
         </div>
         <br><br><br><br><br><br><br>
