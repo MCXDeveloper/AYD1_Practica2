@@ -33,4 +33,16 @@ class Model_login extends CI_Model {
 
     }
 
+    public function obtener_productos() {
+
+        $query = $this->db->get_where('producto');
+
+        if($query->num_rows() > 0){
+            return $query->result();
+        }else{
+            return FALSE;
+        }
+
+    }
+
 }
