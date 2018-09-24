@@ -12,10 +12,10 @@
         <div class="collapse navbar-collapse" id="navbar-ex-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a id="carrito_compras"><span class="badge badge_carrito">0</span><i class="fa fa-fw fa-lg fa-shopping-cart"></i></a>
+                    <a id="carrito_compras" style="cursor:pointer;"><span class="badge badge_carrito">0</span><i class="fa fa-fw fa-lg fa-shopping-cart"></i></a>
                 </li>
                 <li class="active">
-                    <a id="cerrar_sesion">Cerrar sesión</a>
+                    <a id="cerrar_sesion" style="cursor:pointer;">Cerrar sesión</a>
                 </li>
             </ul>
         </div>
@@ -134,5 +134,40 @@
         });
 
     });
+
+</script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    $('#cerrar_sesion').on('click', function(){
+
+        $.ajax({
+
+            type: 'POST',
+            url:  '<?php echo base_url('home/cerrar_sesion'); ?>',
+            timeout: 5000,
+
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert('Ocurrió un error');
+            },
+
+            success: function(data) {
+
+                var obj = $.parseJSON(data);
+
+                if(obj.code == 1) {
+
+                    window.location.href = "<?php echo base_url(); ?>";
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
 
 </script>

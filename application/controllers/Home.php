@@ -19,6 +19,18 @@ class Home extends CI_Controller {
 
 	}
 
+	public function cerrar_sesion() {
+
+		$this->session->sess_destroy();
+
+		$respuesta = array(
+			'code' => 1
+		);
+
+		echo json_encode($respuesta);
+
+	}
+
 	public function obtener_laptops() {
 
 		$code = 0;
