@@ -101,7 +101,7 @@
 
                 if(obj.code == 1){
                     $('#modalDatos').modal('hide');
-                    window.location.href = "<?php echo base_url('tienda-en-linea'); ?>";
+                    window.location.href = "<?php echo base_url(); ?>";
                 }
 
             }

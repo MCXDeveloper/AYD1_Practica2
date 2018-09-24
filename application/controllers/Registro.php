@@ -28,8 +28,13 @@ class Registro extends CI_Controller {
                 $ins_resp = $this->model_registro->registrar_usuario($correo, $contraseña);
 
                 if($ins_resp != FALSE) {
+
                     $code_resp = 1;
                     $mesg_resp = "Usuario registrado correctamente.";
+
+                    // Guardo su correo en las variables de sesión
+                    $this->session->set_userdata(array('usr_correo' => $correo));
+
                 }else{
                     $mesg_resp = "No se pudo registrar el usuario, intente de nuevo más tarde.";
                 }
