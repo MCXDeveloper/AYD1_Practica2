@@ -72,6 +72,12 @@
         </div>
     </div>
 </div>
+<!--NUEVO MODAL PARA EDITAR INFORMACION DEL USUARIO-->
+<div id="modalEditarUsuario" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        
+    </div>
+</div>
 <script type="text/javascript">
 
     $(document).ready(function(){
