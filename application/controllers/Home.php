@@ -203,4 +203,49 @@ class Home extends CI_Controller {
 
 	}
 
+	/*FUNCION PARA RESETEAR PASSWORD DE USUARIO*/
+	public function reset_password()
+	{
+		$code = 0; // CODIGO DE RESPUESTA
+		$message = "no se reseteo el password";
+
+		if($this->model_login->is_logged() == TRUE)
+		{
+			$correo_usuario = $this->session->userdata['usr_correo'];
+
+			$nuevo = $this->input->post('password');
+
+			$datos = array(
+				'pass' => $nuevo
+			);
+
+			$condicion = array('correo' => $correo_usuario);
+			
+			$resp = $this->model_login->actualiza_password($datos, $condicion);
+
+			if($resp == TRUE)
+			{
+				$code = 1;
+				$message = "Cambio de Password realizado exitosamente!";
+			}
+			else
+			{
+				$message = "Error, no se pudo cambiar el Password!";
+			}
+		}
+		else
+		{
+			$code = 2;
+			$message = "Para realizar esta accion debes iniciar sesion!";
+		}
+
+		$respuesta = array(
+			'code' => $code,
+			'message' => $message
+		);
+
+		echo json_encode($respuesta);
+
+	}
+
 }

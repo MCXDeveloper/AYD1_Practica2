@@ -17,6 +17,9 @@
                 <li>
                     <a id="editar_datos" style="cursor:pointer;">Editar datos</a>
                 </li>
+                <li>
+                    <a id="passwordReset" style="cursor:pointer;">Cambiar Password</a>
+                </li>
                 <li class="active">
                     <a id="cerrar_sesion" style="cursor:pointer;">Cerrar sesión</a>
                 </li>
@@ -75,7 +78,30 @@
 <!--NUEVO MODAL PARA EDITAR INFORMACION DEL USUARIO-->
 <div id="modalEditarUsuario" class="modal fade" role="dialog">
     <div class="modal-dialog">
-        
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Editar Password de Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-1">
+                            <form role="form" class="datos_edit">
+                                <div class="form-group">
+                                    <label class="control-label">Cambiar Password</label>
+                                    <input class="form-control" id="pass" name="pass" placeholder="Ingrese su nueva contrasena" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    <button id="btnResetPass" type="button" class="btn-accion btn btn-info">Cambiar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -178,7 +204,47 @@
     });
 
 </script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#passwordReset").on('click', function(){
+            $('#modalEditarUsuario').modal('show');
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#btnResetPass').on('click', function(){
+            var nuevaPass = $('#pass').val();
 
+            $.ajax({
+                type: 'POST',
+                url:  '<?php echo base_url('home/reset_password'); ?>',
+                data: { password: nuevaPass },
+                timeout: 5000,
+
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ocurrió un error');
+                },
+                
+                success: function(data) {
+
+                    var obj = $.parseJSON(data);
+
+                    alert(obj.message);
+
+                    if(obj.code == 1) {
+                        $('#modalEditarUsuario').modal('hide');
+                        $('#pass').val("");
+                    }else if(obj.code == 2) {
+                        window.location.href = "<?php echo base_url(); ?>";
+                    }
+
+                }
+
+            });
+        })
+    })
+</script>
 <script type="text/javascript">
 
     $(document).on('click', '#btn_registrar_pedido', function(){
