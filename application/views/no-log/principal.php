@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-4 col-md-offset-4">
                         <img src="<?php echo base_url('assets/img/logo.jpg'); ?>" class="img-responsive">
-                        <h3 style="text-align:center;">La mejor tienda de laptops de la GUATEMALA.</h3>
+                        <h3 style="text-align:center;">La mejor tienda de laptops de la región.</h3>
                     </div>
                 </div>
             </div>
