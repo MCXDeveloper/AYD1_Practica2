@@ -1,0 +1,7 @@
+
+
+//para las pruebas unitarias 
+composer require guzzlehttp/guzzle
+
+//ejecutar las pruebas unitarias
+vendor/bin/phpunit tests/Users/FinalTest.php
