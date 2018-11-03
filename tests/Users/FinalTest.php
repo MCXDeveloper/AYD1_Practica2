@@ -33,7 +33,7 @@ class FinalTest extends \PHPUnit_Framework_TestCase {
 
         $response = $this->client->post('/AYD1_Practica2/home/actualizar_data_usuario'); 
 
-        $this->assertEquals(500, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     //Prueba de Correo Inexistente
