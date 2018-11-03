@@ -32,7 +32,7 @@ class FinalTest extends \PHPUnit_Framework_TestCase {
     public function testStatus2(){
 
         $response = $this->client->post('/AYD1_Practica2/home/actualizar_data_usuario'); 
-
+        //Prueba
         $this->assertEquals(500, $response->getStatusCode());
     }
 
