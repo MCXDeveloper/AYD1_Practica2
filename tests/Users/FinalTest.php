@@ -11,7 +11,7 @@ class FinalTest extends \PHPUnit_Framework_TestCase {
     {
         
         $this->client = new GuzzleHttp\Client([
-            'base_uri' => 'http://localhost:400'
+            'base_uri' => 'http://localhost'
         ]);
     }
 
@@ -34,6 +34,17 @@ class FinalTest extends \PHPUnit_Framework_TestCase {
         $response = $this->client->post('/AYD1_Practica2/home/actualizar_data_usuario'); 
 
         $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    //Prueba de Correo Inexistente
+    public function testCorreoInexistente()
+    {
+        $response = $this->client->post('/AYD1_Practica2/login',[
+            'json' => [
+                'correo'    => 'marvin@marvin.com',
+                'password'  => '123456'
+            ]
+        ]);
     }
  
 }
