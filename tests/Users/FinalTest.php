@@ -24,7 +24,7 @@ class FinalTest extends \PHPUnit_Framework_TestCase {
                 'password'    => '123'
             ]
         ]); 
- 
+        //Prueba Exitosa Prueba
         $this->assertEquals(200, $response->getStatusCode());
     }
 
